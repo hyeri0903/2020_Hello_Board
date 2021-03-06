@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.sinc.intern.board">
+	<select id="list" resultType="board">
+		SELECT	SEQ , TITLE, CONTENT, WRITER, TO_CHAR(REGDATE, 'YYYY-MM-DD') AS REGDATE, VIEWCNT <!-- 별칭안주면 에러남 -->
+		FROM	INTERN_BOARD_TBL 
+	</select>
+	
+	<insert id ="register" parameterType="board">
+		INSERT INTO INTERN_BOARD_TBL
+		VALUES(BOARD_SEQ.NEXTVAL,
+				#{title}, #{content}, #{writer}, DEFAULT, DEFAULT) 
+	</insert>
+	
+	<update id ="upCnt" parameterType = "board">
+		UPDATE	INTERN_BOARD_TBL
+		SET		VIEWCNT = VIEWCNT + 1
+		WHERE	SEQ = #{seq}
+	</update>
+	
+	<select id="read" parameterType="map" resultType="board">
+		SELECT	SEQ , TITLE, CONTENT, WRITER, TO_CHAR(REGDATE, 'YYYY-MM-DD') AS REGDATE, VIEWCNT <!-- 별칭안주면 에러남 -->
+		FROM	INTERN_BOARD_TBL 
+		WHERE	SEQ = #{seq}
+	</select>
+	
+	<delete id ="remove" parameterType="board">
+		DELETE 
+		FROM	INTERN_BOARD_TBL
+		WHERE	SEQ = #{seq}
+	</delete>
+	
+	<update id="modify" parameterType="board">
+		UPDATE	INTERN_BOARD_TBL
+		SET		TITLE = #{title}, CONTENT = #{content}
+		WHERE	SEQ = #{seq}
+		
+	</update>
+	
+	<select id="search" parameterType="map" resultType="board">
+		SELECT	SEQ , TITLE, CONTENT, WRITER, TO_CHAR(REGDATE, 'YYYY-MM-DD') AS REGDATE, VIEWCNT <!-- 별칭안주면 에러남 -->
+		FROM	INTERN_BOARD_TBL
+		<where>
+			<if test="searchType == 'title'">
+				TITLE LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test = "searchType == 'writer'">
+				WRITER LIKE .'%' || #{searchKeyword} || '%'
+			</if>
+		</where>
+	</select>
+	
+	
+</mapper>  
+
+
+
+
+
+
+
+
+
+
+

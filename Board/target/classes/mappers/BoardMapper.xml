@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<!-- 다른 mapper와 중복되지 않도록 네임스페이스 기재 -->
+<mapper namespace="com.my.spring.board">
+    <!-- 게시물 목록 데이터 불러오기 -->
+    <select id="list" resultType = "com.my.spring.board.vo.BoardVO">
+		SELECT	bno, title, content, writer, regDate, viewCnt
+		FROM	tbl_board
+	</select> 
+	  
+	<!-- 게시물 작성 -->
+	<insert id ="write" parameterType="com.my.spring.board.vo.BoardVO">
+		INSERT INTO tbl_board 
+		VALUES(seq_board.nextval, 
+				#{title}, #{content}, #{writer}, DEFAULT, DEFAULT) 
+	</insert>
+	
+	<!-- 게시물 조회 -->
+	<select id="view" parameterType="int" resultType="com.my.spring.board.vo.BoardVO">
+	 SELECT	bno, title, content, writer, regDate, viewCnt
+	 FROM	tbl_board
+	 WHERE	bno = #{bno}   
+	</select>
+	
+	<!-- 게시물 수정 -->
+	<update id="modify" parameterType = "com.my.spring.board.vo.BoardVO">
+	UPDATE tbl_board
+		SET
+			title = #{title},
+			content = #{content},
+			writer = #{writer}
+		WHERE bno = #{bno}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id = "delete" parameterType = "int">
+	DELETE
+	FROM tbl_board
+	WHERE bno = #{bno}
+	</delete>
+	
+	<!-- 게시물 총 갯수 -->
+	<select id="count" resultType="int">
+		SELECT count(bno)
+		FROM tbl_board
+	</select>
+	
+	<!-- 게시물 목록 + 페이징 -->
+	<select id="listPage" parameterType = "hashMap" resultType = "com.my.spring.board.vo.BoardVO">
+	<![CDATA[
+	SELECT	c.bno, c.title, c.writer, c.regDate, c.viewCnt
+	FROM (
+		SELECT	b.bno, b.title, b.writer, b.regDate, b.viewCnt, ROWNUM as RNUM
+		FROM (
+			SELECT		bno, title, writer, regDate, viewCnt
+			FROM		tbl_board 
+			ORDER BY	bno DESC
+		)b
+	)c
+	WHERE RNUM >= #{displayPost} and RNUM <= #{postNum} + #{displayPost}
+	]]>
+	</select>
+
+</mapper>

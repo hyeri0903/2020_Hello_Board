@@ -1,6 +1,6 @@
 # Board
-Develop Board using Spring Framework
-
+Project : Develop Board using Spring Framework
+프로젝트 실행 환경
 - JAVA : jdk 1.8
 - Spring Framework : STS-3.9.11(Spring Tool Suite)
 - Eclipse

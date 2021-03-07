@@ -1,8 +1,9 @@
 # Board
 Project : Develop Board using Spring Framework
-프로젝트 실행 환경
+프로젝트 실행 환경 ,개발 Tool
 - JAVA : jdk 1.8
-- Spring Framework : STS-3.9.11(Spring Tool Suite)
+- Spring Framework : 4.3.3v
+- STS-3.9.11(Spring Tool Suite)
 - Eclipse
 - Database : Oracle 11g
 - Server : Tomcat 8.5v
